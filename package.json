@@ -17,6 +17,7 @@
     "classnames": "^2.2.5",
     "enquire-js": "^0.1.2",
     "foundation-symbol": "^0.1.0",
+    "js-base64": "^2.4.3",
     "nebpay": "0.0.5",
     "nebulas": "^0.4.8",
     "prop-types": "^15.5.8",
