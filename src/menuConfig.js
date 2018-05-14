@@ -10,17 +10,24 @@ const headerMenuConfig = [
   },
   {
     name: '反馈',
-    path: 'https://github.com/alibaba/ice',
+    path: 'https://github.com/kun368/NasWill/issues/new',
     external: true,
     newWindow: true,
     icon: 'message',
   },
   {
-    name: '帮助',
-    path: 'https://alibaba.github.io/ice',
+    name: '开发者主页',
+    path: 'http://www.zzkun.com',
     external: true,
     newWindow: true,
-    icon: 'bangzhu',
+    icon: 'yonghu',
+  },
+  {
+    name: '下载Chrome插件',
+    path: 'https://github.com/ChengOrangeJu/WebExtensionWallet',
+    external: true,
+    newWindow: true,
+    icon: 'key',
   },
 ];
 

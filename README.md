@@ -1,4 +1,4 @@
-# NasWill: 星云遗嘱系统
+# NasWill: 星云遗嘱托管系统
 
 
 [![Build Status](https://travis-ci.org/kun368/NasWill.svg?branch=master)](https://travis-ci.org/kun368/NasWill)
@@ -82,6 +82,7 @@ NasWill.prototype = {
     item.txHash = Blockchain.transaction.from.hash;
     item.title = title;
     item.author = author;
+    item.createTime = time;
     item.content = content;
 
     this._push('sendMap', item.sendAddr, item);
@@ -96,16 +97,16 @@ NasWill.prototype = {
     var send = this.sendMap.get(from);
     var recv = this.recvMap.get(from);
     if (!send) {
-      send = { addr: key, arr: [] };
+      send = { addr: from, arr: [] };
     }
     if (!recv) {
-      recv = { addr: key, arr: [] };
+      recv = { addr: from, arr: [] };
     }
     return { send: send, recv: recv };
   },
-
 };
 module.exports = NasWill;
+
 ```
 
 ---

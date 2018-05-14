@@ -6,7 +6,7 @@ export default class Logo extends PureComponent {
     return (
       <div className="logo" style={{}}>
         <Link to="/" className="logo-text">
-          星云遗嘱系统
+          星云遗嘱托管
         </Link>
       </div>
     );

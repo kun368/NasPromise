@@ -15,7 +15,7 @@ const { Group: RadioGroup } = Radio;
 const { ImageUpload } = Upload;
 const Toast = Feedback.toast;
 
-const dappAddress = "n1iagTrvEn5cwCGYfHskVoYtgQ7rDqmephT";
+const dappAddress = "n1rMNT9v7WQzGHrCoMpZQfY8hc9p8X7XaKa";
 
 
 export default class SettingsForm extends Component {

@@ -1,31 +1,93 @@
 import React, { Component } from 'react';
-import { Tab } from '@icedesign/base';
+import { Tab, Feedback } from '@icedesign/base';
 import IceContainer from '@icedesign/container';
 import './TagMessageList.scss';
+import NebPay from 'nebpay';
+import { Base64 } from 'js-base64';
 
-const dataSource = [
-  { title: '关于淘宝网存储设备商品发布规范的公告', date: '2017/01/06' },
-  { title: '加强淘宝网电动四轮车类目准入的公告', date: '2017/01/06' },
-  { title: '淘宝网VR头盔商品发布规范的公告', date: '2017/01/06' },
-  { title: '加强淘宝网农药类目准入的公告', date: '2017/01/06' },
-  { title: '淘宝网2017年春节发货时间及交易超时调整公告', date: '2017/01/06' },
-];
+
+const Toast = Feedback.toast;
+const nebPay = new NebPay();
+
+const dappAddress = "n1rMNT9v7WQzGHrCoMpZQfY8hc9p8X7XaKa";
+
 
 export default class TagMessageList extends Component {
   static displayName = 'TagMessageList';
 
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      dataSourceSend: [],
+      dataSourceRecv: []
+    };
   }
 
-  renderItem = (item, idx) => {
+  checkInstalledPlugin = () => {
+    return typeof(webExtensionWallet) !== 'undefined';
+  };
+
+  componentDidMount() {
+    if (!this.checkInstalledPlugin()) {
+      Toast.error('还未安装Chrome扩展，请点击页面上方的下载按钮');
+      return;
+    }
+    const contract = {
+      function: 'queryMy',
+      args: `[]`,
+    };
+    Toast.loading("正在获取您的遗嘱数据");
+    nebPay.simulateCall(dappAddress, '0', contract.function, contract.args, {
+      qrcode: {
+        showQRCode: false,
+      },
+      listener: (resp) => {
+        if (resp.execute_err !== "") {
+          Toast.error("获取数据失败: " + resp.execute_err);
+          return;
+        }
+        const item = JSON.parse(resp.result);
+        console.log(item);
+        this.setState({
+          dataSourceSend: item.send.arr,
+          dataSourceRecv: item.recv.arr,
+        });
+        Toast.success("获取遗嘱数据成功");
+      },
+    });
+  }
+
+  renderItem = (item, idx, type) => {
     return (
-      <div style={styles.item} key={idx}>
-        <a href="##" style={styles.title}>
-          {item.title}
-        </a>
-        <div style={styles.date}>{item.date}</div>
+      <div key={idx} style={styles.articleItem}>
+        <div>
+          <div style={styles.title}>
+            立嘱人：{ item.author }
+          </div><br/>
+
+          <div style={styles.title}>
+            标题：{ item.title }
+          </div><br/>
+
+          <div style={styles.title}>
+            时间：{ new Date(item.createTime).toLocaleString() }
+          </div><br/>
+
+          <div style={styles.title}>
+            发送者：{ item.sendAddr }
+          </div><br/>
+
+          <div style={styles.title}>
+            接收者：{ item.recvAddrs.join(", ") }
+          </div><br/>
+        </div>
+        <div>
+          {Base64.decode(item.content).split('\n').map((item, i) => {
+            return (
+              <p style={styles.desc} key={i}>{ item }</p>
+            )
+          })}
+        </div>
       </div>
     );
   };
@@ -35,14 +97,15 @@ export default class TagMessageList extends Component {
       <div className="tag-message-list">
         <IceContainer>
           <Tab size="small">
-            <Tab.TabPane key={0} tab="我的消息">
-              {dataSource.map(this.renderItem)}
-              <div style={styles.allMessage}>
-                <a href="##">查看全部消息</a>
-              </div>
+            <Tab.TabPane key={0} tab={`我发送的遗嘱（${this.state.dataSourceSend.length}）`}>
+              {this.state.dataSourceSend.map((item, idx) => {
+                return this.renderItem(item, idx, 0)
+              })}
             </Tab.TabPane>
-            <Tab.TabPane key={1} tab="待我处理">
-              <p>暂无数据</p>
+            <Tab.TabPane key={1} tab={`我收到的遗嘱（${this.state.dataSourceRecv.length}）`}>
+              {this.state.dataSourceRecv.map((item, idx) => {
+                return this.renderItem(item, idx, 1)
+              })}
             </Tab.TabPane>
           </Tab>
         </IceContainer>
@@ -65,10 +128,21 @@ const styles = {
   },
   title: {
     fontSize: '14px',
+    lineHeight: '14px',
     color: '#666',
   },
   date: {
     fontSize: '12px',
     color: '#666',
+  },
+  desc: {
+    lineHeight: '14px',
+    fontSize: '14px',
+    color: '#999',
+  },
+  articleItem: {
+    marginBottom: '15px',
+    paddingBottom: '15px',
+    borderBottom: '1px solid #f5f5f5',
   },
 };
