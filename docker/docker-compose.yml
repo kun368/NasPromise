@@ -1,7 +1,7 @@
 version: '3'
 
 services:
-  nas-floater-dapp-server:
+  nas-will-dapp-server:
     image: kun368/nas-will:master
     restart: always
     ports:
