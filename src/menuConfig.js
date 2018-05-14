@@ -47,11 +47,6 @@ const asideMenuConfig = [
     path: '/MyCenter',
     icon: 'yonghu',
   },
-  {
-    name: '学堂',
-    path: '/Learn',
-    icon: 'creative',
-  },
 ];
 
 export { headerMenuConfig, asideMenuConfig };

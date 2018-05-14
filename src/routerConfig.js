@@ -6,7 +6,6 @@ import HeaderAsideFooterLayout from './layouts/HeaderAsideFooterLayout';
 import Home from './pages/Home';
 import Create from './pages/Create';
 import MyCenter from './pages/MyCenter';
-import Learn from './pages/Learn';
 import NotFound from './pages/NotFound';
 
 const routerConfig = [
@@ -24,11 +23,6 @@ const routerConfig = [
     path: '/MyCenter',
     layout: HeaderAsideFooterLayout,
     component: MyCenter,
-  },
-  {
-    path: '/Learn',
-    layout: HeaderAsideFooterLayout,
-    component: Learn,
   },
   {
     path: '*',

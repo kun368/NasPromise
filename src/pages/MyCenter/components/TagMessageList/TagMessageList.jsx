@@ -9,7 +9,7 @@ import { Base64 } from 'js-base64';
 const Toast = Feedback.toast;
 const nebPay = new NebPay();
 
-const dappAddress = "n1rMNT9v7WQzGHrCoMpZQfY8hc9p8X7XaKa";
+const dappAddress = "n1vgZU7fDxQgjKkeB4W2mXd8UYRhj9jQN9a";
 
 
 export default class TagMessageList extends Component {
