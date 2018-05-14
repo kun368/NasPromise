@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import TermsInfo from './components/TermsInfo';
 import SettingsForm from './components/SettingsForm';
 
 export default class Create extends Component {
@@ -13,7 +12,6 @@ export default class Create extends Component {
   render() {
     return (
       <div className="create-page">
-        <TermsInfo />
         <SettingsForm />
       </div>
     );
