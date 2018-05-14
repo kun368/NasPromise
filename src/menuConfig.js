@@ -31,24 +31,19 @@ const asideMenuConfig = [
     icon: 'home',
   },
   {
-    name: '用户管理',
-    path: '/user',
+    name: '创建',
+    path: '/Create',
+    icon: 'edit',
+  },
+  {
+    name: '我的',
+    path: '/MyCenter',
     icon: 'yonghu',
   },
   {
-    name: '系统设置',
-    path: '/setting',
-    icon: 'shezhi',
-    children: [
-      {
-        name: '基本设置',
-        path: '/base',
-      },
-      {
-        name: '评论设置',
-        path: '/comment',
-      },
-    ],
+    name: '学堂',
+    path: '/Learn',
+    icon: 'creative',
   },
 ];
 

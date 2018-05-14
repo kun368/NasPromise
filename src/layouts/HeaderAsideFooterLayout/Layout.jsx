@@ -140,7 +140,7 @@ export default class HeaderAsideFooterLayout extends Component {
           >
             {this.state.isScreen !== 'isDesktop' && <Logo />}
             <Menu
-              style={{ width: 200 }}
+              style={{ width: 106 }}
               onClick={this.onMenuClick}
               selectedKeys={[pathname]}
               defaultSelectedKeys={[pathname]}
