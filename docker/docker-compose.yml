@@ -1,8 +1,8 @@
 version: '3'
 
 services:
-  nas-will-dapp-server:
-    image: kun368/nas-will:master
+  nas-promise-dapp-server:
+    image: kun368/nas-promise:master
     restart: always
     ports:
-      - "8130:80"
+      - "8116:80"

@@ -14,8 +14,8 @@ install:
 
 script:
   - npm install && ice build
-  - docker build -t kun368/nas-will:$TRAVIS_BRANCH .
+  - docker build -t kun368/nas-promise:$TRAVIS_BRANCH .
 
 after_success:
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-  - docker push kun368/nas-will:$TRAVIS_BRANCH
+  - docker push kun368/nas-promise:$TRAVIS_BRANCH

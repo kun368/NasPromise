@@ -15,8 +15,8 @@ body {
     .logo-text {
       display: block;
       width: 100%;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      //overflow: hidden;
+      //text-overflow: ellipsis;
       white-space: nowrap;
       font-size: 36px;
       color: $ice-logo-text-color;

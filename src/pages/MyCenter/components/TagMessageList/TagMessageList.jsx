@@ -2,15 +2,11 @@ import React, { Component } from 'react';
 import { Tab, Feedback } from '@icedesign/base';
 import IceContainer from '@icedesign/container';
 import './TagMessageList.scss';
-import NebPay from 'nebpay';
 import { Base64 } from 'js-base64';
+import NebUtils from '../../../../util/NebUtils';
 
 
 const Toast = Feedback.toast;
-const nebPay = new NebPay();
-
-const dappAddress = "n1vgZU7fDxQgjKkeB4W2mXd8UYRhj9jQN9a";
-
 
 export default class TagMessageList extends Component {
   static displayName = 'TagMessageList';
@@ -23,71 +19,57 @@ export default class TagMessageList extends Component {
     };
   }
 
-  checkInstalledPlugin = () => {
-    return typeof(webExtensionWallet) !== 'undefined';
-  };
-
   componentDidMount() {
-    if (!this.checkInstalledPlugin()) {
-      Toast.error('还未安装Chrome扩展，请点击页面上方的下载按钮');
+    if (!NebUtils.checkInstalledPlugin()) {
+      Toast.error('本功能需要在电脑端安装Chrome扩展，并登陆后使用，谢谢~');
       return;
     }
     const contract = {
       function: 'queryMy',
       args: `[]`,
     };
-    Toast.loading("正在获取您的遗嘱数据");
-    nebPay.simulateCall(dappAddress, '0', contract.function, contract.args, {
-      qrcode: {
-        showQRCode: false,
-      },
-      listener: (resp) => {
-        if (resp.execute_err !== "") {
-          Toast.error("获取数据失败: " + resp.execute_err);
-          return;
-        }
-        const item = JSON.parse(resp.result);
-        console.log(item);
-        this.setState({
-          dataSourceSend: item.send.arr,
-          dataSourceRecv: item.recv.arr,
-        });
-        Toast.success("获取遗嘱数据成功");
-      },
+    Toast.loading("正在获取您的承诺数据");
+    NebUtils.pluginSimCall(contract.function, contract.args, item => {
+      this.setState({
+        dataSourceSend: item.send.arr,
+        dataSourceRecv: item.recv.arr,
+      });
+      Toast.success("获取承诺数据成功");
     });
   }
 
   renderItem = (item, idx, type) => {
+    const content = Base64.decode(item.content).split('\n').join("<br />");
+
     return (
       <div key={idx} style={styles.articleItem}>
-        <div>
-          <div style={styles.title}>
-            立嘱人：{ item.author }
-          </div><br/>
-
-          <div style={styles.title}>
-            标题：{ item.title }
-          </div><br/>
-
-          <div style={styles.title}>
-            时间：{ new Date(item.createTime).toLocaleString() }
-          </div><br/>
-
-          <div style={styles.title}>
-            发送者：{ item.sendAddr }
-          </div><br/>
-
-          <div style={styles.title}>
-            接收者：{ item.recvAddrs.join(", ") }
-          </div><br/>
-        </div>
-        <div>
-          {Base64.decode(item.content).split('\n').map((item, i) => {
-            return (
-              <p style={styles.desc} key={i}>{ item }</p>
-            )
-          })}
-        </div>
+        <ul style={styles.detailTable}>
+          <li style={styles.detailItem}>
+            <div style={styles.detailTitle}>承诺人：</div>
+            <div style={styles.detailBody}>{ item.author }</div>
+          </li>
+          <li style={styles.detailItem}>
+            <div style={styles.detailTitle}>承诺标题：</div>
+            <div style={styles.detailBody}>{ item.title }</div>
+          </li>
+          <li style={styles.detailItem}>
+            <div style={styles.detailTitle}>承诺时间：</div>
+            <div style={styles.detailBody}>{ new Date(item.createTime).toLocaleString() }</div>
+          </li>
+          <li style={styles.detailItem}>
+            <div style={styles.detailTitle}>承诺人地址：</div>
+            <div style={styles.detailBody}>{ item.sendAddr }</div>
+          </li>
+          <li style={styles.detailItem}>
+            <div style={styles.detailTitle}>接收者地址：</div>
+            <div style={styles.detailBody}>{ item.recvAddrs.join(", ") }</div>
+          </li>
+          <li style={styles.detailItem}>
+            <div style={styles.detailTitle}>承诺内容：</div>
+            <div style={styles.detailBody} dangerouslySetInnerHTML={{__html: content}}>
+            </div>
+          </li>
+        </ul>
       </div>
     );
   };
@@ -97,12 +79,12 @@ export default class TagMessageList extends Component {
       <div className="tag-message-list">
         <IceContainer>
           <Tab size="small">
-            <Tab.TabPane key={0} tab={`我发送的遗嘱（${this.state.dataSourceSend.length}）`}>
+            <Tab.TabPane key={0} tab={`我发送的承诺（${this.state.dataSourceSend.length}）`}>
               {this.state.dataSourceSend.map((item, idx) => {
                 return this.renderItem(item, idx, 0)
               })}
             </Tab.TabPane>
-            <Tab.TabPane key={1} tab={`我收到的遗嘱（${this.state.dataSourceRecv.length}）`}>
+            <Tab.TabPane key={1} tab={`我收到的承诺（${this.state.dataSourceRecv.length}）`}>
               {this.state.dataSourceRecv.map((item, idx) => {
                 return this.renderItem(item, idx, 1)
               })}
@@ -144,5 +126,23 @@ const styles = {
     marginBottom: '15px',
     paddingBottom: '15px',
     borderBottom: '1px solid #f5f5f5',
+  },
+
+  detailItem: {
+    padding: '8px 0px',
+    display: 'flex',
+    borderTop: '1px solid #EEEFF3',
+  },
+  detailTitle: {
+    marginRight: '30px',
+    textAlign: 'right',
+    width: '120px',
+    color: '#999999',
+  },
+  detailBody: {
+    flex: 1,
+  },
+  statusProcessing: {
+    color: '#64D874',
   },
 };

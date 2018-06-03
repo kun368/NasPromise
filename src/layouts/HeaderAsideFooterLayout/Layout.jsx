@@ -16,7 +16,8 @@ import './scss/light.scss';
 import './scss/dark.scss';
 
 // 设置默认的皮肤配置，支持 dark 和 light 两套皮肤配置
-const theme = typeof THEME === 'undefined' ? 'dark' : THEME;
+// const theme = typeof THEME === 'undefined' ? 'dark' : THEME;
+const theme = 'dark';
 @withRouter
 export default class HeaderAsideFooterLayout extends Component {
   static propTypes = {};

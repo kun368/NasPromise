@@ -4,13 +4,8 @@
 
 const headerMenuConfig = [
   {
-    name: '首页',
-    path: '/',
-    icon: 'home',
-  },
-  {
     name: '反馈',
-    path: 'https://github.com/kun368/NasWill/issues/new',
+    path: 'https://github.com/kun368/NasPromise/issues/new',
     external: true,
     newWindow: true,
     icon: 'message',
@@ -29,6 +24,13 @@ const headerMenuConfig = [
     newWindow: true,
     icon: 'key',
   },
+  {
+    name: '下载手机钱包',
+    path: 'https://nano.nebulas.io/index_cn.html',
+    external: true,
+    newWindow: true,
+    icon: 'phone',
+  },
 ];
 
 const asideMenuConfig = [
@@ -46,6 +48,11 @@ const asideMenuConfig = [
     name: '我的',
     path: '/MyCenter',
     icon: 'yonghu',
+  },
+  {
+    name: '\u5E2E\u52A9',
+    path: '/Help',
+    icon: 'home',
   },
 ];
 

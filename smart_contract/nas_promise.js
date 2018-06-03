@@ -1,7 +1,7 @@
 'use strict';
 
 
-var Will = function (text) {
+var Promise = function (text) {
   if (text) {
     var o = JSON.parse(text);
     this.sendAddr = o.sendAddr;
@@ -21,19 +21,27 @@ var Will = function (text) {
     this.content = '';
   }
 };
-Will.prototype = {
+Promise.prototype = {
   toString: function () {
     return JSON.stringify(this);
   },
 };
 
 
-var NasWill = function () {
+var NasPromise = function () {
   LocalContractStorage.defineMapProperty(this, 'sendMap');
   LocalContractStorage.defineMapProperty(this, 'recvMap');
+  LocalContractStorage.defineMapProperty(this, 'hashMap', {
+    parse: function (text) {
+      return new Promise(text);
+    },
+    stringify: function (o) {
+      return o.toString();
+    }
+  });
 };
 
-NasWill.prototype = {
+NasPromise.prototype = {
   init: function () {
   },
 
@@ -46,11 +54,11 @@ NasWill.prototype = {
     this[collectionName].put(key, item);
   },
 
-  createWill: function (title, author, content, recvAddrs) {
+  createPromise: function (title, author, content, recvAddrs) {
     var from = Blockchain.transaction.from;
     var time = Blockchain.transaction.timestamp * 1000;
 
-    var item = new Will();
+    var item = new Promise();
     item.sendAddr = from;
     item.recvAddrs = recvAddrs.split(',');
     item.txHash = Blockchain.transaction.from.hash;
@@ -59,11 +67,30 @@ NasWill.prototype = {
     item.createTime = time;
     item.content = content;
 
+    this.hashMap.put(item.txHash, item);
     this._push('sendMap', item.sendAddr, item);
     for (var obj of item.recvAddrs) {
       this._push('recvMap', obj, item);
     }
     return item;
+  },
+
+  querySend: function() {
+    var from = Blockchain.transaction.from;
+    var send = this.sendMap.get(from);
+    if (!send) {
+      send = { addr: from, arr: [] };
+    }
+    return send;
+  },
+
+  queryRecv: function() {
+    var from = Blockchain.transaction.from;
+    var recv = this.recvMap.get(from);
+    if (!recv) {
+      recv = { addr: from, arr: [] };
+    }
+    return recv;
   },
 
   queryMy: function () {
@@ -78,5 +105,14 @@ NasWill.prototype = {
     }
     return { send: send, recv: recv };
   },
+
+  queryOnePromise: function (txHash) {
+    var item = this.hashMap.get(txHash);
+    if (!item) {
+      throw new Error('not found');
+    }
+    return item;
+  }
+
 };
-module.exports = NasWill;
+module.exports = NasPromise;

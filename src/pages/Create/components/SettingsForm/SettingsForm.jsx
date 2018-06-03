@@ -9,13 +9,12 @@ import {
 } from '@icedesign/form-binder';
 import './SettingsForm.scss';
 import { Base64 } from 'js-base64';
+import NebUtils from '../../../../util/NebUtils';
 
 const { Row, Col } = Grid;
 const { Group: RadioGroup } = Radio;
 const { ImageUpload } = Upload;
 const Toast = Feedback.toast;
-
-const dappAddress = "n1vgZU7fDxQgjKkeB4W2mXd8UYRhj9jQN9a";
 
 
 export default class SettingsForm extends Component {
@@ -43,52 +42,22 @@ export default class SettingsForm extends Component {
     });
   };
 
-  checkInstalledPlugin = () => {
-    return typeof(webExtensionWallet) !== 'undefined';
-  };
-
   validateAllFormField = () => {
     this.refs.form.validateAll((errors, values) => {
       console.log('errors', errors, 'values', values);
       if (errors) {
         return;
       }
-      if (!this.checkInstalledPlugin()) {
-        Toast.error('还未安装Chrome扩展，请点击页面上方的下载按钮');
-        return;
-      }
+
       const content = Base64.encode(values.content);
       const recvAddrs = values.recvAddrs.split('\n').join(',');
-
       const contract = {
-        function: 'createWill',
+        function: 'createPromise',
         args: `["${values.title}", "${values.author}", "${content}", "${recvAddrs}"]`,
       };
-      window.postMessage({
-        'target': 'contentscript',
-        'data': {
-          'to': dappAddress,
-          'value': '0',
-          'contract': {
-            'function': contract.function,
-            'args': contract.args,
-          },
-        },
-        'method': 'neb_sendTransaction',
-      }, '*');
-      Toast.success('请确认已发起的交易！');
-      window.addEventListener('message', resp => {
-        console.log('response of push: ', resp);
-        try {
-          const dat = resp.data.data;
-          if (!!dat.txhash) {
-            console.log('Transaction hash:\n' + JSON.stringify(dat.txhash, null, '\t'));
-            if (JSON.stringify(dat).indexOf('Error') === -1) {
-              Toast.success('已提交交易，交易成功后即创建遗嘱成功！');
-            }
-          }
-        } catch (e) {
-        }
+      Toast.success("请确认已安装Chrome扩展，或在手机端安装了手机钱包，并确认交易~");
+      NebUtils.nebPayCall(contract.function, contract.args, false, resp => {
+        Toast.success('已提交交易，交易成功后即创建承诺成功！');
       });
     });
   };
@@ -103,14 +72,14 @@ export default class SettingsForm extends Component {
             ref="form"
           >
             <div style={styles.formContent}>
-              <h2 style={styles.formTitle}>创建遗嘱</h2>
+              <h2 style={styles.formTitle}>创建承诺</h2>
 
               <Row style={styles.formItem}>
                 <Col xxs="6" s="3" l="3" style={styles.label}>
-                  遗嘱标题：
+                  承诺标题：
                 </Col>
                 <Col s="16" l="16">
-                  <IceFormBinder name="title" required max={15} message="请填写1-15字遗嘱标题">
+                  <IceFormBinder name="title" required max={15} message="请填写1-15字承诺标题">
                     <Input size="large"/>
                   </IceFormBinder>
                   <IceFormError name="title"/>
@@ -119,7 +88,7 @@ export default class SettingsForm extends Component {
 
               <Row style={styles.formItem}>
                 <Col xxs="6" s="3" l="3" style={styles.label}>
-                  姓名：
+                  您的姓名：
                 </Col>
                 <Col s="16" l="16">
                   <IceFormBinder name="author" required max={10} message="请填写1-10字姓名">
@@ -132,11 +101,11 @@ export default class SettingsForm extends Component {
 
               <Row style={styles.formItem}>
                 <Col xxs="6" s="3" l="3" style={styles.label}>
-                  遗嘱内容：
+                  承诺内容：
                 </Col>
                 <Col s="16" l="16">
                   <IceFormBinder name="content">
-                    <Input size="large" multiple required placeholder="遗嘱内容（可添加图片链接等信息）" rows={20} message="请输入遗嘱内容"/>
+                    <Input size="large" multiple required placeholder="承诺内容（可添加图片链接等信息）" rows={12} message="请输入承诺内容"/>
                   </IceFormBinder>
                   <IceFormError name="content"/>
                 </Col>
@@ -144,11 +113,11 @@ export default class SettingsForm extends Component {
 
               <Row style={styles.formItem}>
                 <Col xxs="6" s="3" l="3" style={styles.label}>
-                  接受者地址：
+                  承诺接受地址：
                 </Col>
                 <Col s="16" l="16">
                   <IceFormBinder name="recvAddrs">
-                    <Input size="large" multiple required placeholder="请输入可接收到遗嘱内容的NAS钱包地址，支持多个，每行一个" rows={5} message="请输入接受者地址"/>
+                    <Input size="large" multiple required placeholder="请输入可接收到承诺内容的NAS钱包地址，支持多个，每行一个" rows={5} message="请输入接受者地址"/>
                   </IceFormBinder>
                   <IceFormError name="recvAddrs"/>
                 </Col>
