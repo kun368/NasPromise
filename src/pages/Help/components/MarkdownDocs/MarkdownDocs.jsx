@@ -4,47 +4,41 @@ import './MarkdownDocs.scss';
 import IceContainer from '@icedesign/container';
 
 const initialSource = `
-# 开发者入驻
 
-## 产品定位
+# 星云承诺链简介
 
-支付宝小程序是一种全新的开放模式，它运行在支付宝客户端，可以被便捷地获取和传播，为终端用户提供更优的用户体验。小程序开放给开发者更多的JSAPI和OpenAPI能力，通过小程序可以为用户提供多样化便捷服务。
+星云承诺链是情侣、朋友、同事等之间，记录诺言、兑现诺言、增进感情的神器。 
 
-支付宝小程序开放给企业帐号，想要成为支付宝小程序开发者，需要完成注册、入驻以及小程序创建三步。
+星云承诺链用的是星云智能合约技术，一旦发出诺言，就永久记录的区块链上，就不能反悔，不能篡改，永不丢失！ 
 
+以后再有人说下次请你吃饭 / 给你发红包 / 直播吃屎，让他把诺言纪录在这个DApp上！。 
 
-## 第一步：注册
+# 我们的优势
 
-* 用【企业支付宝账号】登录开放平台 ；
-* 进入【小程序公测首页】 申请小程序公测，审核时间为1个工作日；
+- 诺言数据不可篡改，无法作弊
+- 诺言数据永不丢失
+- 支持二维码分享诺言，随时查看
+- 同时支持PC端和移动端
 
-> 注意1：公测期间尚未开放个人支付宝账户
-> 注意2：未注册企业支付宝账号请访问：注册企业支付宝账号
+# 操作演示示例
 
-## 第二步：入驻
+![](http://zzkun-tuchuang.oss-cn-hangzhou.aliyuncs.com/18-6-3/44777183.jpg)
 
-使用企业支付宝账户登录，依照入驻指引选择自己入驻的身份角色，完善身份信息，签署平台服务协议，成为开放平台合作伙伴。
+![](http://zzkun-tuchuang.oss-cn-hangzhou.aliyuncs.com/18-6-3/22360600.jpg)
 
-**1. 支付宝账号登录**
+![](http://zzkun-tuchuang.oss-cn-hangzhou.aliyuncs.com/18-6-3/41093807.jpg)
 
-![](https://gw.alipayobjects.com/zos/skylark/public/files/e3ecca36714dd5d0cc8ecca0f84c000a.png)
+![](http://zzkun-tuchuang.oss-cn-hangzhou.aliyuncs.com/18-6-3/53660232.jpg)
 
-**2. 选择入驻身份**
+![](http://zzkun-tuchuang.oss-cn-hangzhou.aliyuncs.com/18-6-3/92541918.jpg)
 
-![](https://gw.alipayobjects.com/zos/skylark/public/files/b39b0dfa0c13882e4ab7377fc9f194d0.png)
+![](http://zzkun-tuchuang.oss-cn-hangzhou.aliyuncs.com/18-6-3/18077322.jpg)
 
-**3. 完善信息**
+![](http://zzkun-tuchuang.oss-cn-hangzhou.aliyuncs.com/18-6-3/52267962.jpg)
 
-![](https://gw.alipayobjects.com/zos/skylark/public/files/af51a6e5c4c41089588b8a2ea9f4c993.png)
+![](http://zzkun-tuchuang.oss-cn-hangzhou.aliyuncs.com/18-6-3/3631381.jpg)
 
-## 第三步：登录小程序管理中心
-
-完成注册后，可以选择以下渠道进入小程序管理中心：
-
-* 通过小程序首页,点击“登录管理中心”，进入小程序管理中心，开始【创建小程】
-* 通过开放平台首页,点击"登录"，进入开放平台管理中心，选择“开发者中心／小程序”，开始【创建小程序】
-
-![](https://gw.alipayobjects.com/zos/skylark/public/files/5272d5041de283125ac03428a6e0ed4f.png)`;
+`;
 
 export default class MarkdownDocs extends Component {
   static displayName = 'MarkdownDocs';

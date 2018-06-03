@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import MarkdownDocs from './components/MarkdownDocs';
-import SimpleTimeline from './components/SimpleTimeline';
+import SimpleStep from './components/SimpleStep/SimpleStep';
 
 export default class Help extends Component {
   static displayName = 'Help';
@@ -13,7 +13,7 @@ export default class Help extends Component {
   render() {
     return (
       <div className="help-page">
-        <SimpleTimeline />
+        <SimpleStep/>
         <MarkdownDocs />
       </div>
     );
