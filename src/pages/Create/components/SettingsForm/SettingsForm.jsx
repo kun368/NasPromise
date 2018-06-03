@@ -10,6 +10,8 @@ import {
 import './SettingsForm.scss';
 import { Base64 } from 'js-base64';
 import NebUtils from '../../../../util/NebUtils';
+import { Dialog } from '@icedesign/base/index';
+import QRCode from 'qrcode.react'
 
 const { Row, Col } = Grid;
 const { Group: RadioGroup } = Radio;
@@ -33,6 +35,8 @@ export default class SettingsForm extends Component {
         content: '',
         recvAddrs: '',
       },
+      qrDialogShow: false,
+      txHash: '',
     };
   }
 
@@ -56,15 +60,47 @@ export default class SettingsForm extends Component {
         args: `["${values.title}", "${values.author}", "${content}", "${recvAddrs}"]`,
       };
       Toast.success("请确认已安装Chrome扩展，或在手机端安装了手机钱包，并确认交易~");
-      NebUtils.nebPayCall(contract.function, contract.args, false, resp => {
-        Toast.success('已提交交易，交易成功后即创建承诺成功！');
+      NebUtils.nebPayCall(contract.function, contract.args, false, txHash => {
+        this.setState({
+          qrDialogShow: true,
+          txHash: txHash,
+        });
       });
     });
   };
 
+  onQRDialogClose = () => {
+    this.setState({
+      qrDialogShow: false
+    });
+  };
+
+  renderQRDialog() {
+    const url = `http://promise.zzkun.com/#/SingleDetail/${this.state.txHash}`;
+
+    return (
+      <Dialog
+        visible={this.state.qrDialogShow}
+        onOk={this.onQRDialogClose}
+        closable="esc,mask,close"
+        onCancel={this.onQRDialogClose}
+        onClose={this.onQRDialogClose}
+        title="已为您生成承诺分享二维码！"
+      >
+        <div style={{textAlign: 'center'}}>
+          <QRCode value={url} renderAs="svg" size={196}/>
+          <p>（此二维码交易成功后可用）</p>
+        </div>
+        <p>此二维码截图保存后可以分享给朋友</p>
+        <p>您还可以到“我的”页面，查看您所有创建可收到的承诺</p>
+      </Dialog>
+    );
+  }
+
   render() {
     return (
       <div className="settings-form">
+        {this.renderQRDialog()}
         <IceContainer>
           <IceFormBinderWrapper
             value={this.state.value}
@@ -113,7 +149,7 @@ export default class SettingsForm extends Component {
 
               <Row style={styles.formItem}>
                 <Col xxs="6" s="3" l="3" style={styles.label}>
-                  承诺接受地址：
+                  承诺接收地址：
                 </Col>
                 <Col s="16" l="16">
                   <IceFormBinder name="recvAddrs">

@@ -50,9 +50,9 @@ const asideMenuConfig = [
     icon: 'yonghu',
   },
   {
-    name: '\u5E2E\u52A9',
+    name: '帮助',
     path: '/Help',
-    icon: 'home',
+    icon: 'bell',
   },
 ];
 

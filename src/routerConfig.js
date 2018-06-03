@@ -7,6 +7,7 @@ import Home from './pages/Home';
 import Create from './pages/Create';
 import MyCenter from './pages/MyCenter';
 import Help from './pages/Help';
+import SingleDetail from './pages/SingleDetail';
 import NotFound from './pages/NotFound';
 
 const routerConfig = [
@@ -29,6 +30,11 @@ const routerConfig = [
     path: '/Help',
     layout: HeaderAsideFooterLayout,
     component: Help,
+  },
+  {
+    path: '/SingleDetail/:txHash',
+    layout: HeaderAsideFooterLayout,
+    component: SingleDetail,
   },
   {
     path: '*',
