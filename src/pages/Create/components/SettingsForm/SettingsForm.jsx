@@ -93,7 +93,7 @@ export default class SettingsForm extends Component {
           <QRCode value={url} renderAs="svg" size={196}/>
           <p>（此二维码交易成功后可用）</p>
           <p>此二维码截图保存后可以分享给朋友</p>
-          <p>您还可以到“我的”页面，查看您所有创建可收到的承诺</p>
+          <p>您还可以到“我的”页面，查看您所有创建和收到的承诺</p>
         </div>
       </Dialog>
     );

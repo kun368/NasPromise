@@ -93,8 +93,7 @@ NasPromise.prototype = {
     return recv;
   },
 
-  queryMy: function () {
-    var from = Blockchain.transaction.from;
+  queryMy: function (from) {
     var send = this.sendMap.get(from);
     var recv = this.recvMap.get(from);
     if (!send) {

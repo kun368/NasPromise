@@ -24,17 +24,19 @@ export default class TagMessageList extends Component {
       Toast.error('本功能需要在电脑端安装Chrome扩展，并登陆后使用，谢谢~');
       return;
     }
-    const contract = {
-      function: 'queryMy',
-      args: `[]`,
-    };
+
     Toast.loading("正在获取您的承诺数据");
-    NebUtils.pluginSimCall(contract.function, contract.args, item => {
-      this.setState({
-        dataSourceSend: item.send.arr,
-        dataSourceRecv: item.recv.arr,
-      });
-      Toast.success("获取承诺数据成功");
+    NebUtils.getPluginUserAddress(addr => {
+      NebUtils.userCallAxios(
+        "queryMy", `["${addr}"]`,
+        item => {
+          this.setState({
+            dataSourceSend: item.send.arr,
+            dataSourceRecv: item.recv.arr,
+          });
+          Toast.success("获取承诺数据成功");
+        }
+      )
     });
   }
 
