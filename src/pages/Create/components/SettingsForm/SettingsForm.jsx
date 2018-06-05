@@ -61,10 +61,12 @@ export default class SettingsForm extends Component {
       };
       Toast.success("请确认已安装Chrome扩展，或在手机端安装了手机钱包，并确认交易~");
       NebUtils.nebPayCall(contract.function, contract.args, false, txHash => {
-        this.setState({
-          qrDialogShow: true,
-          txHash: txHash,
-        });
+        if (txHash) {
+          this.setState({
+            qrDialogShow: true,
+            txHash: txHash,
+          });
+        }
       });
     });
   };
@@ -90,9 +92,9 @@ export default class SettingsForm extends Component {
         <div style={{textAlign: 'center'}}>
           <QRCode value={url} renderAs="svg" size={196}/>
           <p>（此二维码交易成功后可用）</p>
+          <p>此二维码截图保存后可以分享给朋友</p>
+          <p>您还可以到“我的”页面，查看您所有创建可收到的承诺</p>
         </div>
-        <p>此二维码截图保存后可以分享给朋友</p>
-        <p>您还可以到“我的”页面，查看您所有创建可收到的承诺</p>
       </Dialog>
     );
   }
