@@ -58,8 +58,8 @@
   },
   "title": "nas_promise",
   "themeConfig": {
-    "theme": "light",
-    "primaryColor": "#3080FE",
-    "secondaryColor": "#FFC107"
+    "theme": "dark",
+    "primaryColor": "#3CB371",
+    "secondaryColor": "grey"
   }
 }
