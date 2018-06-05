@@ -60,7 +60,7 @@ export default class SettingsForm extends Component {
         args: `["${values.title}", "${values.author}", "${content}", "${recvAddrs}"]`,
       };
       Toast.success("请确认已安装Chrome扩展，或在手机端安装了手机钱包，并确认交易~");
-      NebUtils.nebPayCall(contract.function, contract.args, false, txHash => {
+      NebUtils.nebPayCall(contract.function, contract.args, true, txHash => {
         if (txHash) {
           this.setState({
             qrDialogShow: true,
